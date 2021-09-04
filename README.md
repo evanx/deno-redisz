@@ -1,6 +1,6 @@
 # deno-redisz
 
-![image](https://user-images.githubusercontent.com/899558/132098797-1ac4f73f-0609-454b-a78c-93783732557a.png)
+![image](https://user-images.githubusercontent.com/899558/132104942-ea318fc9-18bb-46e3-bb2f-baf1d2c3b42e.png)
 
 Deno CLI utility for pretty printing Redis sort sets.
 
@@ -25,6 +25,6 @@ Deno will download the versioned dependencies into its cache, and run the utilit
 ### Revision History
 
 - 0.0.1 on 2021-09-04 defaults to ZREVRANGE
-
+- 
 <hr>
 <a href='https://twitter.com/evanxredis'>https://twitter.com/evanxredis</a>
