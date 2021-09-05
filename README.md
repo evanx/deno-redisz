@@ -1,6 +1,6 @@
 # deno-redisz
 
-Deno CLI utility for pretty printing Redis sort sets.
+Deno CLI utility for pretty printing Redis sorted sets.
 
 Recommended usage is to `alias` the `deno run` command with restricted access to Redis only, as follows:
 
@@ -19,7 +19,9 @@ redisz <command> <sorted set key, prefix or pattern> <start> <stop>
 - supported commands: `zrevrange zrange zrevrangebyscore rangebyscore`
 - commands are case-insensitive
 - the default command is `zrevrange`
-- the default `start` and `stop` are `0` and `9`
+- `zrange` and `zrevrange` commands have optional args: `start stop`
+- the default `start` and `stop` are: `0 9`
+- `zrangebyscore` and `zrevrangebyscore` are followed by mandatory args: `min max`
 - If no key is specified, then the util will scan, filter and print keys i.e. via `SCAN`
 - If the key includes the '\*' wildcard character, then it is considered a pattern for `SCAN`
 - If no key matches exactly, then the util will treat it as a prefix and add a wildcard
@@ -27,6 +29,8 @@ redisz <command> <sorted set key, prefix or pattern> <start> <stop>
 Deno will download the versioned dependencies into its cache, and run the utility with the restricted permissions specified in the `alias` command.
 
 ### Demo
+
+See the `demo.sh` script in this repo.
 
 See the `redisz` CLI utility demo'ed in the "Terminal" in the following Visual Code screenshot:
 

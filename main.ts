@@ -52,6 +52,7 @@ async function processArgs(command: string, argKey: string, args: string[]) {
   const pattern = buildPattern(argKey);
   const keys = await scanRedisKeys(redis, pattern, {
     type: "zset",
+    redisVersion,
   });
   if (keys.length === 0) {
     exitWithErrorText("No matching keys");
@@ -71,10 +72,7 @@ async function processKey(key: string, command: string, args: string[]) {
     let start = 0;
     let stop = 9;
     if (args.length) {
-      if (
-        !(args.length === 2 && /^[0-9]+$/.test(args[0]) &&
-          /^[0-9]+$/.test(args[1]))
-      ) {
+      if (args.length !== 2) {
         exitWithErrorText(`Invalid args: ${command} ${args.join(" ")}`);
       }
       start = parseInt(args[0]);
@@ -86,10 +84,7 @@ async function processKey(key: string, command: string, args: string[]) {
     let start = 0;
     let stop = 9;
     if (args.length) {
-      if (
-        !(args.length === 2 && /^[0-9]+$/.test(args[0]) &&
-          /^[0-9]+$/.test(args[1]))
-      ) {
+      if (args.length !== 2) {
         exitWithErrorText(`Invalid args: ${command} ${args.join(" ")}`);
       }
       start = parseInt(args[0]);
@@ -98,26 +93,20 @@ async function processKey(key: string, command: string, args: string[]) {
     output(await redis.zrange(key, start, stop, { withScore: true }));
     exitOk();
   } else if (command === "zrangebyscore") {
-    if (
-      !(args.length === 2 && /^[0-9]+$/.test(args[0]) &&
-        /^[0-9]+$/.test(args[1]))
-    ) {
+    if (args.length !== 2) {
       exitWithErrorText(`Invalid args: ${command} ${args.join(" ")}`);
     }
-    const start = parseInt(args[0]);
-    const stop = parseInt(args[1]);
-    output(await redis.zrangebyscore(key, start, stop, { withScore: true }));
+    const min = Number(args[0]);
+    const max = Number(args[1]);
+    output(await redis.zrangebyscore(key, min, max, { withScore: true }));
     exitOk();
   } else if (command === "zrevrangebyscore") {
-    if (
-      !(args.length === 2 && /^[0-9]+$/.test(args[0]) &&
-        /^[0-9]+$/.test(args[1]))
-    ) {
+    if (args.length !== 2) {
       exitWithErrorText(`Invalid args: ${command} ${args.join(" ")}`);
     }
-    const start = parseInt(args[0]);
-    const stop = parseInt(args[1]);
-    output(await redis.zrevrangebyscore(key, start, stop, { withScore: true }));
+    const min = Number(args[0]);
+    const max = Number(args[1]);
+    output(await redis.zrevrangebyscore(key, min, max, { withScore: true }));
     exitOk();
   } else {
     exitWithErrorText(`Invalid command: ${command} ${JSON.stringify(args)}`);
