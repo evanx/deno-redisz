@@ -1,6 +1,6 @@
 # deno-redisz
 
-![image](https://user-images.githubusercontent.com/899558/132104942-ea318fc9-18bb-46e3-bb2f-baf1d2c3b42e.png)
+![image](https://user-images.githubusercontent.com/899558/132129797-a0928d8b-76a7-4d17-bf44-df3fbd17e215.png)
 
 Deno CLI utility for pretty printing Redis sort sets.
 
