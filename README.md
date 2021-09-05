@@ -6,7 +6,7 @@ Recommended usage is to `alias` the `deno run` command with restricted access to
 
 ```shell
 alias redisz='
-  deno -q run --allow-net=127.0.0.1:6379 https://raw.githubusercontent.com/evanx/deno-redisz/v0.0.1/main.ts
+  deno run -q --allow-net=127.0.0.1:6379 https://raw.githubusercontent.com/evanx/deno-redisz/v0.0.1/main.ts
 '
 ```
 
