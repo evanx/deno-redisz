@@ -1,4 +1,13 @@
 import * as Colors from "https://deno.land/std/fmt/colors.ts";
+import { printInfoFooter, printInfoHeader } from "./utils.ts";
+
+const helpLink = "https://github.com/evanx/deno-redisz";
+
+export function exitWithErrorText(text: string) {
+  printInfoHeader(text);
+  printInfoFooter(`See ${helpLink}`);
+  Deno.exit(1);
+}
 
 export function formatMember(
   member: string,

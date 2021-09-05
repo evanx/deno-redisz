@@ -16,7 +16,10 @@ redisz() {
   echo
 }
 
-redisz
-redisz test
-redisz test:redisz
-redisz test:redisz:z
+redisz || echo "OK"
+redisz test || echo "OK"
+redisz zrange test:redisz
+redisz zrevrange test:redisz
+redisz zrange test:redisz:z 0 2
+redisz zrangebyscore test:redisz:z 1623000111001 1623000111002 
+redisz zrevrangebyscore test:redisz:z 1623000111003 1623000111002

@@ -1,27 +1,16 @@
 import * as Colors from "https://deno.land/std/fmt/colors.ts";
 import { Redis, SimpleStringReply } from "https://deno.land/x/redis/mod.ts";
 
-export function matchGroup(string: string, regex: RegExp) {
-  const matcher = string.match(regex);
-  return matcher ? matcher.pop() : null;
-}
-
 export function exitOk() {
   Deno.exit(0);
 }
 
-export function exitWithErrorText(text: string) {
-  printInfoHeader(text);
-  printInfoFooter();
-  Deno.exit(1);
-}
-
 export function printInfoHeader(text: string) {
-  console.error(Colors.blue(text));
+  console.error(Colors.yellow(text));
 }
 
-export function printInfoFooter() {
-  console.error(Colors.gray("See https://github.com/evanx/redish"));
+export function printInfoFooter(text: string) {
+  console.error(Colors.gray(text));
 }
 
 export function unflattenRedis(array: string[]): Map<String, String> {
@@ -30,6 +19,11 @@ export function unflattenRedis(array: string[]): Map<String, String> {
     map.set(array[index], array[index + 1]);
   }
   return map;
+}
+
+export function parseRedisVersion(text: string) {
+  const match = text.match(/\bredis_version:(\d\.\d+)/);
+  return match ? match.pop() : "5.0";
 }
 
 export async function scanRedisKeys(
