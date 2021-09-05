@@ -69,7 +69,7 @@ async function processArgs(command: string, argKey: string, args: string[]) {
 async function processKey(key: string, command: string, args: string[]) {
   if (command === "zrevrange") {
     let start = 0;
-    let stop = 0;
+    let stop = 9;
     if (args.length) {
       if (
         !(args.length === 2 && /^[0-9]+$/.test(args[0]) &&
@@ -84,7 +84,7 @@ async function processKey(key: string, command: string, args: string[]) {
     exitOk();
   } else if (command === "zrange") {
     let start = 0;
-    let stop = 0;
+    let stop = 9;
     if (args.length) {
       if (
         !(args.length === 2 && /^[0-9]+$/.test(args[0]) &&
@@ -98,33 +98,25 @@ async function processKey(key: string, command: string, args: string[]) {
     output(await redis.zrange(key, start, stop, { withScore: true }));
     exitOk();
   } else if (command === "zrangebyscore") {
-    let start = 0;
-    let stop = 0;
-    if (args.length) {
-      if (
-        !(args.length === 2 && /^[0-9]+$/.test(args[0]) &&
-          /^[0-9]+$/.test(args[1]))
-      ) {
-        exitWithErrorText(`Invalid args: ${command} ${args.join(" ")}`);
-      }
-      start = parseInt(args[0]);
-      stop = parseInt(args[1]);
+    if (
+      !(args.length === 2 && /^[0-9]+$/.test(args[0]) &&
+        /^[0-9]+$/.test(args[1]))
+    ) {
+      exitWithErrorText(`Invalid args: ${command} ${args.join(" ")}`);
     }
+    const start = parseInt(args[0]);
+    const stop = parseInt(args[1]);
     output(await redis.zrangebyscore(key, start, stop, { withScore: true }));
     exitOk();
   } else if (command === "zrevrangebyscore") {
-    let start = 0;
-    let stop = 0;
-    if (args.length) {
-      if (
-        !(args.length === 2 && /^[0-9]+$/.test(args[0]) &&
-          /^[0-9]+$/.test(args[1]))
-      ) {
-        exitWithErrorText(`Invalid args: ${command} ${args.join(" ")}`);
-      }
-      start = parseInt(args[0]);
-      stop = parseInt(args[1]);
+    if (
+      !(args.length === 2 && /^[0-9]+$/.test(args[0]) &&
+        /^[0-9]+$/.test(args[1]))
+    ) {
+      exitWithErrorText(`Invalid args: ${command} ${args.join(" ")}`);
     }
+    const start = parseInt(args[0]);
+    const stop = parseInt(args[1]);
     output(await redis.zrevrangebyscore(key, start, stop, { withScore: true }));
     exitOk();
   } else {
