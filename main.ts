@@ -15,6 +15,24 @@ const redis = await connect({
 
 const redisVersion = parseRedisVersion(await redis.info("server"));
 
+if (Deno.args.length === 0) {
+  await scanZKeys("*");
+  exitWithErrorText(
+    "Usage: <command> <key, prefix or pattern> ...",
+  );
+} else if (Deno.args.length === 1) {
+  await scanZKeys(buildPattern(Deno.args[0]));
+  exitWithErrorText(
+    "Usage: <command> <key, prefix or pattern> ...",
+  );
+} else {
+  await processArgs(Deno.args[0], Deno.args[1], Deno.args.slice(2));
+}
+
+function buildPattern(pattern: string) {
+  return pattern.includes("*") ? pattern : `${pattern}*`;
+}
+
 async function scanZKeys(pattern: string) {
   const keys = await scanRedisKeys(redis, pattern, {
     type: "zset",
@@ -26,47 +44,26 @@ async function scanZKeys(pattern: string) {
   }
 }
 
-if (Deno.args.length === 0) {
-  await scanZKeys("*");
-  exitWithErrorText(
-    "Usage: <command> <key, prefix or pattern> ...",
-  );
-}
-
-if (Deno.args.length === 1) {
-  const patternArg = Deno.args[0];
-  const pattern = patternArg.includes("*") ? patternArg : `${patternArg}*`;
-  await scanZKeys(pattern);
-  exitWithErrorText(
-    "Usage: <command> <key, prefix or pattern> ...",
-  );
-}
-
-const command = Deno.args[0];
-const argKey = Deno.args[1];
-const args = Deno.args.slice(2);
-const type = await redis.type(argKey);
-if (type === "zset") {
-  await processKey(argKey, command, args);
-}
-const pattern = buildPattern(argKey);
-const keys = await scanRedisKeys(redis, pattern, {
-  type: "zset",
-});
-if (keys.length === 0) {
-  exitWithErrorText("No matching keys");
-}
-if (keys.length > 1) {
-  printInfoHeader(`Found matching zset keys:`);
-  console.log(keys.join("\n"));
-  exitOk();
-}
-const foundKey = keys[0];
-printInfoHeader(`Found key: ${command} ${foundKey}`);
-await processKey(foundKey, command, args);
-
-function buildPattern(pattern: string) {
-  return pattern.includes("*") ? pattern : `${pattern}*`;
+async function processArgs(command: string, argKey: string, args: string[]) {
+  const type = await redis.type(argKey);
+  if (type === "zset") {
+    await processKey(argKey, command, args);
+  }
+  const pattern = buildPattern(argKey);
+  const keys = await scanRedisKeys(redis, pattern, {
+    type: "zset",
+  });
+  if (keys.length === 0) {
+    exitWithErrorText("No matching keys");
+  }
+  if (keys.length > 1) {
+    printInfoHeader(`Found matching zset keys:`);
+    console.log(keys.join("\n"));
+    exitOk();
+  }
+  const foundKey = keys[0];
+  printInfoHeader(`Found key: ${command} ${foundKey}`);
+  await processKey(foundKey, command, args);
 }
 
 async function processKey(key: string, command: string, args: string[]) {

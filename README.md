@@ -36,7 +36,7 @@ See the `redisz` CLI utility demo'ed in the "Terminal" in the following Visual C
 
 ### Revision History
 
-- 0.0.1 on 2021-09-04 defaults to ZREVRANGE, also supports ZRANGE, ZRANGEBYSCORE, ZREVRANGEBYSCORE
+- 2021-09-05 v0.0.1 defaults to ZREVRANGE also supports ZRANGE, ZRANGEBYSCORE, ZREVRANGEBYSCORE
 
 <hr>
 <a href='https://twitter.com/evanxredis'>https://twitter.com/evanxredis</a>
