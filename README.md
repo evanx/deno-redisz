@@ -10,7 +10,7 @@ alias redisz='
 '
 ```
 
-## Demo
+### Usage
 
 Then this `redisz` alias can be used relatively securely as follows:
 
@@ -27,6 +27,8 @@ redisz <command> <sorted set key, prefix or pattern> <start> <stop>
 - If no key matches exactly, then the util will treat it as a prefix and add a wildcard
 
 Deno will download the versioned dependencies into its cache, and run the utility with the restricted permissions specified in the `alias` command.
+
+### Demo
 
 See the `redisz` CLI utility demo'ed in the "Terminal" in the following Visual Code screenshot:
 
