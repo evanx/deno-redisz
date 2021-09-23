@@ -67,6 +67,7 @@ async function processArgs(command: string, argKey: string, args: string[]) {
 }
 
 async function processKey(key: string, command: string, args: string[]) {
+  printInfoHeader(`${command} ${key}`);
   if (command === "zrevrange") {
     let start = 0;
     let stop = 9;
