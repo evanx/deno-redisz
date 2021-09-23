@@ -47,6 +47,7 @@ async function scanZKeys(pattern: string) {
 async function processArgs(command: string, argKey: string, args: string[]) {
   const type = await redis.type(argKey);
   if (type === "zset") {
+    printInfoHeader(`${command} ${key}`);
     await processKey(argKey, command, args);
   }
   const pattern = buildPattern(argKey);
@@ -67,7 +68,6 @@ async function processArgs(command: string, argKey: string, args: string[]) {
 }
 
 async function processKey(key: string, command: string, args: string[]) {
-  printInfoHeader(`${command} ${key}`);
   if (command === "zrevrange") {
     let start = 0;
     let stop = 9;
